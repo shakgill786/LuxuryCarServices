@@ -15,13 +15,13 @@ module.exports = {
     logging: false,       // Disable logs during tests
   },
   production: {
-    use_env_variable: 'DATABASE_URL', // Use DATABASE_URL from env vars
+    use_env_variable: 'DATABASE_URL', // Use DATABASE_URL from Render
     dialect: 'postgres',
     seederStorage: 'sequelize',
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false, // Allow SSL for Heroku-like environments
+        rejectUnauthorized: false, // Allow SSL connections
       },
     },
     define: {
