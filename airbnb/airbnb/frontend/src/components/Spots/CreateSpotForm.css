@@ -1,0 +1,48 @@
+.create-spot-form {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .create-spot-form h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .create-spot-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-spot-form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .create-spot-form input,
+  .create-spot-form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .create-spot-form button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .create-spot-form button:hover {
+    background-color: #005bb5;
+  }
+  
+  .errors {
+    color: red;
+    margin-bottom: 15px;
+  }

@@ -1,0 +1,23 @@
+.profile-button {
+    position: relative;
+  }
+  
+  .profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    list-style: none;
+    margin: 0;
+    padding: 5px 0;
+    border: 1px solid #ccc;
+  }
+  
+  .profile-dropdown li {
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  .profile-dropdown li:hover {
+    background-color: #f0f0f0;
+  }

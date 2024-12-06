@@ -1,0 +1,17 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+  }
+  
+  .nav-logo a, .nav-links a {
+    text-decoration: none;
+    color: white;
+    margin-right: 15px;
+  }
+  
+  .nav-logo a:hover, .nav-links a:hover {
+    text-decoration: underline;
+  }

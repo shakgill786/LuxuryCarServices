@@ -1,0 +1,27 @@
+.landing-page {
+    padding: 20px;
+  }
+  
+  .spot-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .spot-card {
+    width: 250px;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .spot-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .spot-card h2 {
+    margin: 10px 0;
+    font-size: 1.2em;
+  }

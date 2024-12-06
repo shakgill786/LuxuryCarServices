@@ -1,0 +1,30 @@
+.spot-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .spot-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 600px;
+  }
+  
+  .spot-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .spot-card a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .spot-card a:hover {
+    color: #0073e6;
+  }

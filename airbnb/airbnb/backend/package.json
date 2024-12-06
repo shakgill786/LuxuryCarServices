@@ -1,0 +1,22 @@
+{
+  "name": "luxury-house-rentals",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "pg": "^8.10.0",
+    "sequelize": "^6.37.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "csurf": "^1.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
