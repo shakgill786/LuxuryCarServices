@@ -1,37 +1,42 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const apiRouter = require('./api');
 
-// **Use the API Router for All /api Routes**
 router.use('/api', apiRouter);
 
-// **Development-Only Test Route**
-if (process.env.NODE_ENV !== 'production') {
-  router.get('/hello/world', (req, res) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken()); // Set CSRF token in cookies
-    res.status(200).json({ message: 'Hello World!' });
+// Static routes
+// Serve React build files in production
+if (process.env.NODE_ENV === 'production') {
+  // Serve the frontend's index.html file at the root route
+  router.get('/', (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    res.sendFile(
+      path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
+    );
+  });
+
+  // Serve the static assets in the frontend's build folder
+  router.use(express.static(path.resolve("../frontend/dist")));
+
+  // Serve the frontend's index.html file at all other routes NOT starting with /api
+  router.get(/^(?!\/?api).*/, (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    res.sendFile(
+      path.resolve(__dirname, '../../frontend', 'dist', 'index.html')
+    );
   });
 }
 
-// **Root Route for the API**
-router.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Welcome to the Luxury Car Service API!',
-    status: 'Running'
-  });
-});
-
-// **Route to Restore CSRF Token (Development Only)**
-router.get('/api/csrf/restore', (req, res) => {
-  try {
-    console.log('CSRF route hit'); // Debugging log
-    const csrfToken = req.csrfToken(); // Generate CSRF token
+// Add a XSRF-TOKEN cookie in development
+if (process.env.NODE_ENV !== 'production') {
+  router.get('/api/csrf/restore', (req, res) => {
+    const csrfToken = req.csrfToken();
     res.cookie('XSRF-TOKEN', csrfToken);
-    res.status(200).json({ 'XSRF-Token': csrfToken });
-  } catch (error) {
-    console.error('Error generating CSRF token:', error);
-    res.status(500).json({ message: 'Failed to generate CSRF token' });
-  }
-});
+    res.status(200).json({
+      'XSRF-Token': csrfToken,
+    });
+  });
+}
 
 module.exports = router;

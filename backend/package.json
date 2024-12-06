@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "luxuryvilla-rentals",
   "version": "1.0.0",
-  "description": "Luxury Car Services Backend",
+  "description": "Luxury Villa Rentals Backend",
   "main": "app.js",
   "scripts": {
     "sequelize": "sequelize",
@@ -26,7 +26,6 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.13.0",
-    "per-env": "^1.0.2",
     "sequelize": "^6.37.4",
     "sequelize-cli": "^6.6.2"
   },
