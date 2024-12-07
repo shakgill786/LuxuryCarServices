@@ -8,7 +8,10 @@
     "sequelize-cli": "sequelize-cli",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "build": "node psql-setup-script.js"
+    "build": "node psql-setup-script.js",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
+    "reseed": "sequelize db:seed:undo:all && sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
