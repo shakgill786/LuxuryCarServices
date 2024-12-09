@@ -30,7 +30,7 @@ const validateSpot = [
 // **GET /api/spots - Get All Spots**
 router.get('/', async (req, res) => {
   const { page = 1, size = 20 } = req.query;
-  const limit = size > 20 ? 20 : parseInt(size);
+  const limit = Math.min(size, 20);
   const offset = (page - 1) * limit;
 
   const spots = await Spot.findAll({
@@ -39,7 +39,11 @@ router.get('/', async (req, res) => {
     include: [{ model: SpotImage, where: { preview: true }, required: false }],
   });
 
-  res.json(spots);
+  res.json({
+    status: 'success',
+    message: 'Spots retrieved successfully',
+    data: spots,
+  });
 });
 
 // **GET /api/spots/:spotId - Get Spot Details by ID**
@@ -54,7 +58,10 @@ router.get('/:spotId', async (req, res) => {
   });
 
   if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
+    return res.status(404).json({
+      status: 'error',
+      message: "Spot couldn't be found",
+    });
   }
 
   const numReviews = await Review.count({ where: { spotId } });
@@ -81,7 +88,11 @@ router.get('/:spotId', async (req, res) => {
     Owner: spot.Owner,
   };
 
-  res.json(formattedSpot);
+  res.json({
+    status: 'success',
+    message: 'Spot details retrieved successfully',
+    data: formattedSpot,
+  });
 });
 
 // **POST /api/spots - Create a Spot**
@@ -102,7 +113,11 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
     price,
   });
 
-  res.status(201).json(newSpot);
+  res.status(201).json({
+    status: 'success',
+    message: 'Spot created successfully',
+    data: newSpot,
+  });
 });
 
 // **PUT /api/spots/:spotId - Update a Spot**
@@ -113,17 +128,27 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
   const spot = await Spot.findByPk(spotId);
 
   if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
+    return res.status(404).json({
+      status: 'error',
+      message: "Spot couldn't be found",
+    });
   }
 
   if (spot.ownerId !== req.user.id) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({
+      status: 'error',
+      message: 'Forbidden',
+    });
   }
 
   Object.assign(spot, { address, city, state, country, lat, lng, name, description, price });
   await spot.save();
 
-  res.json(spot);
+  res.json({
+    status: 'success',
+    message: 'Spot updated successfully',
+    data: spot,
+  });
 });
 
 // **DELETE /api/spots/:spotId - Delete a Spot**
@@ -133,15 +158,24 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   const spot = await Spot.findByPk(spotId);
 
   if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
+    return res.status(404).json({
+      status: 'error',
+      message: "Spot couldn't be found",
+    });
   }
 
   if (spot.ownerId !== req.user.id) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({
+      status: 'error',
+      message: 'Forbidden',
+    });
   }
 
   await spot.destroy();
-  res.json({ message: 'Successfully deleted' });
+  res.json({
+    status: 'success',
+    message: 'Spot deleted successfully',
+  });
 });
 
 // **POST /api/spots/:spotId/images - Add Image to a Spot**
@@ -152,11 +186,17 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   const spot = await Spot.findByPk(spotId);
 
   if (!spot) {
-    return res.status(404).json({ message: "Spot couldn't be found" });
+    return res.status(404).json({
+      status: 'error',
+      message: "Spot couldn't be found",
+    });
   }
 
   if (spot.ownerId !== req.user.id) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({
+      status: 'error',
+      message: 'Forbidden',
+    });
   }
 
   const newImage = await SpotImage.create({
@@ -166,9 +206,13 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
   });
 
   res.status(201).json({
-    id: newImage.id,
-    url: newImage.url,
-    preview: newImage.preview,
+    status: 'success',
+    message: 'Image added successfully',
+    data: {
+      id: newImage.id,
+      url: newImage.url,
+      preview: newImage.preview,
+    },
   });
 });
 

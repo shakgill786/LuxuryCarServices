@@ -17,35 +17,35 @@ const validateLogin = [
   check('password')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a password.'),
-  handleValidationErrors
+  handleValidationErrors,
 ];
 
 // **Log In a User**
 router.post('/', validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
-  // **Check if credential and password are provided**
   if (!credential || !password) {
     return res.status(400).json({
-      message: "Bad Request",
+      status: 'error',
+      message: 'Invalid request',
       errors: {
-        credential: !credential ? "Email or username is required" : undefined,
-        password: !password ? "Password is required" : undefined,
-      }
+        credential: !credential ? 'Email or username is required' : undefined,
+        password: !password ? 'Password is required' : undefined,
+      },
     });
   }
 
   try {
     const user = await User.unscoped().findOne({
       where: {
-        [Op.or]: [{ username: credential }, { email: credential }]
-      }
+        [Op.or]: [{ username: credential }, { email: credential }],
+      },
     });
 
-    // **Invalid Credentials Handling**
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
       return res.status(401).json({
-        message: "Invalid credentials"
+        status: 'error',
+        message: 'Invalid credentials',
       });
     }
 
@@ -54,13 +54,16 @@ router.post('/', validateLogin, async (req, res, next) => {
       email: user.email,
       username: user.username,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
     };
 
-    // **Set Token Cookie**
     await setTokenCookie(res, safeUser);
 
-    return res.json({ user: safeUser });
+    return res.json({
+      status: 'success',
+      message: 'User logged in successfully',
+      data: { user: safeUser },
+    });
   } catch (err) {
     next(err);
   }
@@ -69,7 +72,10 @@ router.post('/', validateLogin, async (req, res, next) => {
 // **Log Out a User**
 router.delete('/', (_req, res) => {
   res.clearCookie('token');
-  return res.json({ message: 'Successfully logged out' });
+  return res.json({
+    status: 'success',
+    message: 'Successfully logged out',
+  });
 });
 
 // **Restore Session User**
@@ -82,11 +88,19 @@ router.get('/', restoreUser, (req, res) => {
       email: user.email,
       username: user.username,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
     };
-    return res.json({ user: safeUser });
+    return res.json({
+      status: 'success',
+      message: 'Session restored',
+      data: { user: safeUser },
+    });
   } else {
-    return res.json({ user: null });
+    return res.json({
+      status: 'success',
+      message: 'No session found',
+      data: null,
+    });
   }
 });
 
