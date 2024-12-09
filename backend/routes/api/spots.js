@@ -27,6 +27,21 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
+// **GET /api/spots - Get All Spots**
+router.get('/', async (req, res) => {
+  const { page = 1, size = 20 } = req.query;
+  const limit = size > 20 ? 20 : parseInt(size);
+  const offset = (page - 1) * limit;
+
+  const spots = await Spot.findAll({
+    limit,
+    offset,
+    include: [{ model: SpotImage, where: { preview: true }, required: false }],
+  });
+
+  res.json(spots);
+});
+
 // **GET /api/spots/:spotId - Get Spot Details by ID**
 router.get('/:spotId', async (req, res) => {
   const { spotId } = req.params;
@@ -43,7 +58,8 @@ router.get('/:spotId', async (req, res) => {
   }
 
   const numReviews = await Review.count({ where: { spotId } });
-  const avgRating = await Review.aggregate('stars', 'avg', { where: { spotId } }) || 0;
+  const avgRating =
+    (await Review.aggregate('stars', 'avg', { where: { spotId } })) || 0;
 
   const formattedSpot = {
     id: spot.id,

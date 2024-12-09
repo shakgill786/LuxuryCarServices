@@ -1,0 +1,19 @@
+.add-booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .add-booking-form input {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .add-booking-form button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }

@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postReview } from '../../store/reviews';
+import { postReview, editReview } from '../../store/reviews';
 
-function ReviewForm({ spotId }) {
-  const [comment, setComment] = useState('');
-  const [stars, setStars] = useState(0);
+function ReviewForm({ spotId, initialData = {}, isUpdate, onSuccess }) {
+  const [comment, setComment] = useState(initialData.comment || '');
+  const [stars, setStars] = useState(initialData.stars || 0);
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(postReview(spotId, { comment, stars }));
+    if (isUpdate) {
+      await dispatch(editReview(initialData.id, { comment, stars }));
+    } else {
+      await dispatch(postReview(spotId, { comment, stars }));
+    }
     setComment('');
     setStars(0);
+    onSuccess();
   };
 
   return (
@@ -21,14 +26,19 @@ function ReviewForm({ spotId }) {
         onChange={(e) => setComment(e.target.value)}
         placeholder="Leave your review here..."
       />
-      <input
-        type="number"
-        min="1"
-        max="5"
+      <select
         value={stars}
-        onChange={(e) => setStars(e.target.value)}
-      />
-      <button type="submit">Submit Review</button>
+        onChange={(e) => setStars(parseInt(e.target.value))}
+      >
+        {[1, 2, 3, 4, 5].map((num) => (
+          <option key={num} value={num}>
+            {num} Star{num > 1 && 's'}
+          </option>
+        ))}
+      </select>
+      <button type="submit">
+        {isUpdate ? 'Update Review' : 'Submit Review'}
+      </button>
     </form>
   );
 }

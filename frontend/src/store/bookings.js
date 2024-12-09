@@ -1,7 +1,7 @@
 const LOAD_BOOKINGS = 'bookings/LOAD_BOOKINGS';
 
 export const fetchBookings = () => async (dispatch) => {
-  const response = await fetch('/api/bookings');
+  const response = await csrfFetch('/api/bookings');
   const bookings = await response.json();
   dispatch({ type: LOAD_BOOKINGS, payload: bookings });
 };

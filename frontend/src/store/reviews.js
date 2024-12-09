@@ -2,13 +2,13 @@ const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
 const ADD_REVIEW = 'reviews/ADD_REVIEW';
 
 export const fetchReviews = (spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`);
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
   const reviews = await response.json();
   dispatch({ type: LOAD_REVIEWS, payload: reviews });
 };
 
 export const postReview = (spotId, review) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}/reviews`, {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
     method: 'POST',
     body: JSON.stringify(review),
   });

@@ -1,29 +1,26 @@
 {
-  "name": "luxuryvilla-rentals",
-  "version": "1.0.0",
-  "description": "Luxury Villa Rentals Backend",
+  "name": "luxuryhomes-rentals",
+  "version": "1.0.1",
+  "description": "Luxury Homes Rentals Backend",
   "main": "app.js",
   "scripts": {
-    "sequelize": "sequelize",
-    "sequelize-cli": "sequelize-cli",
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "build": "node psql-setup-script.js",
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
-    "reseed": "sequelize db:seed:undo:all && sequelize db:seed:all"
+    "reseed": "sequelize db:seed:undo:all && sequelize db:seed:all",
+    "lint": "eslint .",
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.0.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "csurf": "^1.2.2",
+    "csurf": "^1.11.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "express-async-errors": "^2.0.0",
+    "express-async-errors": "^3.1.1",
     "express-validator": "^7.2.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -34,7 +31,12 @@
   },
   "devDependencies": {
     "dotenv-cli": "^7.4.2",
+    "eslint": "^8.53.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "keywords": ["luxury", "homes", "rentals"],
+  "author": "Shak Gillani",
+  "license": "ISC"
 }

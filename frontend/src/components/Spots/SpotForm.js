@@ -5,8 +5,13 @@ import { createSpot, updateSpot } from '../../store/spots';
 function SpotForm({ initialData = {}, isUpdate, onSuccess }) {
   const [form, setForm] = useState({
     name: initialData.name || '',
+    address: initialData.address || '',
     city: initialData.city || '',
     state: initialData.state || '',
+    country: initialData.country || '',
+    lat: initialData.lat || '',
+    lng: initialData.lng || '',
+    description: initialData.description || '',
     price: initialData.price || '',
     previewImage: initialData.previewImage || '',
   });
@@ -25,17 +30,24 @@ function SpotForm({ initialData = {}, isUpdate, onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {['name', 'city', 'state', 'price', 'previewImage'].map((field) => (
+      {Object.keys(form).map((field) => (
         <label key={field}>
-          {field}
+          {field[0].toUpperCase() + field.slice(1)}
           <input
-            type="text"
+            type={
+              ['price', 'lat', 'lng'].includes(field) ? 'number' : 'text'
+            }
             value={form[field]}
-            onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, [field]: e.target.value })
+            }
+            placeholder={`Enter ${field}`}
           />
         </label>
       ))}
-      <button type="submit">{isUpdate ? 'Update Spot' : 'Create Spot'}</button>
+      <button type="submit">
+        {isUpdate ? 'Update Spot' : 'Create Spot'}
+      </button>
     </form>
   );
 }

@@ -9,22 +9,29 @@ const { restoreUser } = require('./utils/auth');
 const { ValidationError } = require('sequelize');
 const routes = require('./routes');
 const { environment } = require('./config');
+
 const isProduction = environment === 'production';
 
 const app = express();
 
+// Logging middleware
 app.use(morgan('dev'));
+
+// Middleware to parse cookies and JSON request bodies
 app.use(cookieParser());
 app.use(express.json());
 
+// CORS (only in development mode)
 if (!isProduction) app.use(cors());
 
+// Helmet for secure HTTP headers
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: 'cross-origin',
   })
 );
 
+// CSRF protection
 app.use(
   csurf({
     cookie: {
@@ -35,8 +42,10 @@ app.use(
   })
 );
 
+// Middleware to restore the authenticated user
 app.use(restoreUser);
 
+// Route handling
 app.use(routes);
 
 // Catch unhandled requests and forward to error handler
@@ -48,7 +57,7 @@ app.use((_req, _res, next) => {
   next(err);
 });
 
-// Process sequelize errors
+// Handle Sequelize validation errors
 app.use((err, _req, _res, next) => {
   if (err instanceof ValidationError) {
     err.errors = err.errors.reduce(

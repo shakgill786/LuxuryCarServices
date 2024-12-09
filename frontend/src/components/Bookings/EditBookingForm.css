@@ -1,0 +1,19 @@
+.edit-booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .edit-booking-form input {
+    padding: 5px;
+    font-size: 14px;
+  }
+  
+  .edit-booking-form button {
+    padding: 10px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
