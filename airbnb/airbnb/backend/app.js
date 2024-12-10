@@ -13,15 +13,35 @@ app.use(cookieParser());
 // Apply CSRF Protection
 app.use(csrfProtection);
 
-// Use routes
-app.use(routes);
+// Use API routes
+app.use('/api', routes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve('../frontend/dist')));
-  app.get(/^(?!\/api).*/, (req, res) =>
-    res.sendFile(path.resolve('../frontend/dist', 'index.html'))
-  );
+  // Serve static files from the frontend build folder
+  app.use(express.static(path.resolve(__dirname, '../frontend/build')));
+
+  // Serve the React app for all other GET requests (except API routes)
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+  });
 }
+
+// Catch-all route for non-existing routes
+app.use((req, res, next) => {
+  const error = new Error("The requested resource couldn't be found.");
+  error.status = 404;
+  next(error);
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    title: err.title || 'Server Error',
+    message: err.message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+  });
+});
 
 module.exports = app;
