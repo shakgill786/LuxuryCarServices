@@ -5,6 +5,7 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const path = require('path'); // Required to resolve paths
 const { restoreUser } = require('./utils/auth');
 const { ValidationError } = require('sequelize');
 const routes = require('./routes');
@@ -42,11 +43,19 @@ app.use(
   })
 );
 
+// Serve static files from the React frontend build directory
+app.use(express.static(path.join(__dirname, 'build')));
+
 // Middleware to restore the authenticated user
 app.use(restoreUser);
 
 // Route handling
 app.use(routes);
+
+// Serve the React frontend for all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Catch unhandled requests and forward to error handler
 app.use((_req, _res, next) => {

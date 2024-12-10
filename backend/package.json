@@ -1,12 +1,12 @@
 {
-  "name": "luxuryhomes-rentals",
+  "name": "luxuryhomes-backend",
   "version": "1.0.1",
-  "description": "Luxury Homes Rentals Backend",
+  "description": "Backend for Luxury Homes Rentals",
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "build": "node psql-setup-script.js",
+    "build": "sequelize db:migrate && sequelize db:seed:all",
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
     "reseed": "sequelize db:seed:undo:all && sequelize db:seed:all",
@@ -36,7 +36,7 @@
     "nodemon": "^3.1.7",
     "sqlite3": "^5.1.7"
   },
-  "keywords": ["luxury", "homes", "rentals"],
+  "keywords": ["luxury", "homes", "rentals", "backend"],
   "author": "Shak Gillani",
   "license": "ISC"
 }
