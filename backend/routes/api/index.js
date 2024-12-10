@@ -1,5 +1,6 @@
 const express = require('express');
-const { restoreUser } = require('../../utils/auth');
+const { restoreUser, requireAuth, setTokenCookie } = require('../../utils/auth'); // Ensure requireAuth is imported
+const { User } = require('../../db/models'); // Ensure User model is imported for test routes
 const sessionRouter = require('./session');
 const usersRouter = require('./users');
 const spotsRouter = require('./spots');
