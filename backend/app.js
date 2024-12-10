@@ -44,7 +44,7 @@ app.use(
 );
 
 // Serve static files from the React frontend build directory
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // Middleware to restore the authenticated user
 app.use(restoreUser);
@@ -54,7 +54,7 @@ app.use(routes);
 
 // Serve the React frontend for all other routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
 // Catch unhandled requests and forward to error handler
